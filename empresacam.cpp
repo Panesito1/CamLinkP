@@ -125,25 +125,25 @@ int menu()
 {
     int op;
 
-    gotoxy(10, 5);
+   gotoxy(10, 5);
     cout << "EMPRESA CAMLINK\n";
-    gotoxy(15, 6);
+   gotoxy(15, 6);
     cout << "Cantidad de registros: " << lastReg << endl;
-    gotoxy(10, 9);
-    cout << " 1. Agregar Cámara\n";
-    gotoxy(10, 10);
+   gotoxy(10, 9);
+    cout << " 1. Agregar C%cmara\n" << char(64);
+   gotoxy(10, 10);
     cout << " 2. Editar Cámara\n";
-    gotoxy(10, 11);
+   gotoxy(10, 11);
     cout << " 3. Eliminar Cámara\n";
-    gotoxy(10, 12);
+   gotoxy(10, 12);
     cout << " 4. Buscar Cámara\n";
-    gotoxy(10, 13);
+   gotoxy(10, 13);
     cout << " 5. Mostrar todas las Cámaras\n";
-    gotoxy(10, 14);
+   gotoxy(10, 14);
     cout << " 6. Salir\n";
-    gotoxy(10, 15);
+   gotoxy(10, 15);
     cout << " Digite la opción: ";
-    gotoxy(29, 15);
+   gotoxy(29, 15);
     cin >> op;
     return op;
 }
@@ -163,25 +163,25 @@ void start()
         {
         case 1:
             system("cls || clear");
-            gotoxy(10, 5);
+           gotoxy(10, 5);
             cout << "ID:";
-            gotoxy(10, 6);
+           gotoxy(10, 6);
             cout << "MODELO: ";
-            gotoxy(10, 7);
+           gotoxy(10, 7);
             cout << "UBICACIÓN: ";
-            gotoxy(10, 8);
+           gotoxy(10, 8);
             cout << "FECHA DE ENTRADA dd/MM/yyyy: ";
-            gotoxy(10, 9);
+           gotoxy(10, 9);
             cout << "FECHA DE SALIDA dd/MM/yyyy: ";
-            gotoxy(14, 5);
+           gotoxy(14, 5);
             scanf(" %[^\n]", cam.idCamara);
-            gotoxy(18, 6);
+           gotoxy(18, 6);
             scanf(" %[^\n]", cam.modelo);
-            gotoxy(20, 7);
+           gotoxy(20, 7);
             scanf(" %[^\n]", cam.ubicacion);
-            gotoxy(24, 8);
+           gotoxy(24, 8);
             scanf("%d/%d/%d", &cam.fechaEntrada.dia, &cam.fechaEntrada.mes, &cam.fechaEntrada.año);
-            gotoxy(23, 9);
+           gotoxy(23, 9);
             scanf("%d/%d/%d", &cam.fechaSalida.dia, &cam.fechaSalida.mes, &cam.fechaSalida.año);
             addCamera(cam);
             system("pause");
@@ -195,25 +195,25 @@ void start()
             pos = isCamera(id);
             showCamera(pos);
             cout << "DATOS A EDITAR\n";
-            gotoxy(50, 2);
+           gotoxy(50, 2);
             cout << "ID:";
-            gotoxy(50, 3);
+           gotoxy(50, 3);
             cout << "MODELO: ";
-            gotoxy(50, 4);
+           gotoxy(50, 4);
             cout << "UBICACIÓN: ";
-            gotoxy(50, 5);
+           gotoxy(50, 5);
             cout << "FECHA DE ENTRADA dd/MM/yyyy: ";
-            gotoxy(50, 6);
+           gotoxy(50, 6);
             cout << "FECHA DE SALIDA dd/MM/yyyy: ";
-            gotoxy(54, 2);
+           gotoxy(54, 2);
             scanf(" %[^\n]", cam.idCamara);
-            gotoxy(58, 3);
+           gotoxy(58, 3);
             scanf(" %[^\n]", cam.modelo);
-            gotoxy(60, 4);
+           gotoxy(60, 4);
             scanf(" %[^\n]", cam.ubicacion);
-            gotoxy(64, 5);
+           gotoxy(64, 5);
             scanf("%d/%d/%d", &cam.fechaEntrada.dia, &cam.fechaEntrada.mes, &cam.fechaEntrada.año);
-            gotoxy(63, 6);
+           gotoxy(63, 6);
             scanf("%d/%d/%d", &cam.fechaSalida.dia, &cam.fechaSalida.mes, &cam.fechaSalida.año);
             updateCamera(cam, pos);
             cout << "Registro actualizado...\n";
@@ -280,13 +280,25 @@ void saveCameras()
 void readCameras()
 {
     FILE *registroCamara;
-registroCamara = fopen("camaras.bin", "rb");
-if (registroCamara == NULL)
-{
-    return;
+    registroCamara = fopen("camaras.bin", "rb");
+    if (registroCamara == NULL)
+    {
+        return;
+    }
+    lastReg = calcUltReg(registroCamara);
+    fread(cameras, sizeof(camara), MAX, registroCamara);
+    fclose(registroCamara);
 }
-lastReg = calcUltReg(registroCamara);
-fread(cameras, sizeof(camara), MAX, registroCamara);
-fclose(registroCamara);
 
+int calcUltReg(FILE *archivo)
+{
+    int tam_archivo, num_estudiantes;
+    // Obtener el tamaño del archivo
+    fseek(archivo, 0, SEEK_END);
+    tam_archivo = ftell(archivo);
+    rewind(archivo);
+
+    // Calcular el número de alumnos
+    num_estudiantes = tam_archivo / sizeof(camara);
+    return num_estudiantes;
 }

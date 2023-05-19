@@ -1,5 +1,6 @@
 #include<iostream>
-#include "estudianteF.cpp"
+
+#include "empresacam.cpp"
 using namespace std;
 
 int main()
